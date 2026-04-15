@@ -1,0 +1,116 @@
+body {
+    background-color: #050505;
+    color: #00ff00;
+    font-family: 'Courier New', Courier, monospace;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+#terminal {
+    width: 100%;
+    max-width: 900px;
+    border: 1px solid #00ff00;
+    padding: 20px;
+    min-height: 90vh;
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
+    background-color: black;
+}
+
+h1, h2, h3 {
+    text-shadow: 0 0 5px #00ff00;
+    margin-top: 0;
+}
+
+.prompt {
+    color: #ff0055;
+    text-shadow: 0 0 5px #ff0055;
+}
+
+.hack-button {
+    border: 1px solid #00ff00;
+    background: transparent;
+    color: #00ff00;
+    font-family: 'Courier New', Courier, monospace;
+    padding: 10px 15px;
+    margin: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-transform: uppercase;
+}
+
+.hack-button:hover {
+    background: #00ff00;
+    color: black;
+    box-shadow: 0 0 10px #00ff00;
+}
+
+.hidden {
+    display: none !important;
+}
+
+input {
+    background: black;
+    border: 1px dotted #00ff00;
+    color: #00ff00;
+    font-family: 'Courier New', Courier, monospace;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    width: calc(100% - 18px);
+}
+
+input:focus {
+    outline: none;
+    border: 1px solid #00ff00;
+    box-shadow: 0 0 8px #00ff00;
+}
+
+#form-container {
+    margin: 20px 0;
+    border-top: 1px dashed #00ff00;
+    border-bottom: 1px dashed #00ff00;
+    padding: 20px 0;
+    display: block; /* Overridden by hidden when necessary */
+}
+
+#log-container {
+    margin-top: 30px;
+}
+
+#log {
+    height: 350px;
+    overflow-y: auto;
+    border: 1px solid #00ff00;
+    padding: 15px;
+    background: rgba(0, 255, 0, 0.02);
+}
+
+/* Custom Scrollbar for Terminal */
+#log::-webkit-scrollbar {
+    width: 8px;
+}
+#log::-webkit-scrollbar-track {
+    background: #000;
+}
+#log::-webkit-scrollbar-thumb {
+    background: #00ff00;
+}
+
+.typing-line {
+    border-right: 2px solid #00ff00;
+    white-space: pre-wrap;
+    overflow: hidden;
+    animation: blink-caret .75s step-end infinite;
+}
+
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  50% { border-color: #00ff00; }
+}
+
+.log-entry {
+    margin-bottom: 6px;
+    word-break: break-all;
+}

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OSINT Terminal</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="terminal">
+        <div id="header">
+            <h1><span class="prompt">root@osint:~#</span> ./start_tracker.sh</h1>
+            <p>Selecione o módulo de busca:</p>
+            <div id="menu">
+                <button class="hack-button" onclick="showForm('Nome')">[ NOME ]</button>
+                <button class="hack-button" onclick="showForm('Instagram')">[ INSTAGRAM ]</button>
+                <button class="hack-button" onclick="showForm('Facebook')">[ FACEBOOK ]</button>
+                <button class="hack-button" onclick="showForm('TikTok')">[ TIKTOK ]</button>
+            </div>
+        </div>
+
+        <div id="form-container" class="hidden">
+            <h2 id="form-title"></h2>
+            <div id="form-content"></div>
+            <button class="hack-button" onclick="startSearch()">[ INICIAR BUSCA ]</button>
+        </div>
+
+        <div id="log-container">
+            <h3>&gt; TERMINAL LOG:</h3>
+            <div id="log"></div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
