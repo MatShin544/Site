@@ -17,7 +17,9 @@ function showForm(module) {
         </div>
     `;
     
-    // Auto focus the first input
+    // Esconde a workspace na iniciação e limpa inputs
+    document.getElementById('workspace').classList.add('hidden');
+    
     setTimeout(() => {
         const firstInput = formContent.querySelector('input');
         if(firstInput) firstInput.focus();
@@ -26,12 +28,16 @@ function showForm(module) {
 
 async function startSearch() {
     const log = document.getElementById('log');
+    const workspace = document.getElementById('workspace');
+    
+    // Mostra o log e o dossie (workspace grid)
+    workspace.classList.remove('hidden');
     
     // Animação inicial
     log.style.opacity = '0.5';
     setTimeout(() => log.style.opacity = '1', 200);
 
-    log.innerHTML = ''; // Limpar log anterior
+    log.innerHTML = ''; // Limpar log 
 
     const nome = document.getElementById('input-nome').value.trim();
     if (!nome) {
@@ -40,61 +46,47 @@ async function startSearch() {
     }
     const local = document.getElementById('input-local').value.trim();
     
-    // Construção das Dorks
+    // Atualiza nome no dossiê
+    const inputsDossie = document.querySelectorAll('.dossier-input');
+    if (inputsDossie.length > 0) {
+        inputsDossie[0].value = nome;
+        if(local) inputsDossie[2].value = local;
+    }
+    
     const exactName = `"${nome}"`;
     const localString = local ? ` "${local}"` : '';
     
-    // Array com as URLs formatadas
     const dorks = [
-        {
-            name: "Busca Geral Exata",
-            url: `https://www.google.com/search?q=${encodeURIComponent(exactName + localString)}`
-        },
-        {
-            name: "Busca no LinkedIn (Perfis ou menções)",
-            url: `https://www.google.com/search?q=${encodeURIComponent(exactName + localString + " site:linkedin.com")}`
-        },
-        {
-            name: "Vazamentos / Textos no Pastebin",
-            url: `https://www.google.com/search?q=${encodeURIComponent(exactName + " site:pastebin.com")}`
-        },
-        {
-            name: "Buscador de PDFs Públicos (Currículos, diários)",
-            url: `https://www.google.com/search?q=${encodeURIComponent(exactName + " filetype:pdf")}`
-        },
-        {
-            name: "Busca no JusBrasil (Processos Jurídicos)",
-            url: `https://www.google.com/search?q=${encodeURIComponent(exactName + localString + " site:jusbrasil.com.br")}`
-        }
+        { name: "Busca Geral Exata", url: `https://www.google.com/search?q=${encodeURIComponent(exactName + localString)}` },
+        { name: "LinkedIn (Perfis / Referências)", url: `https://www.google.com/search?q=${encodeURIComponent(exactName + localString + " site:linkedin.com")}` },
+        { name: "Pastebin (Textos / Vazamentos)", url: `https://www.google.com/search?q=${encodeURIComponent(exactName + " site:pastebin.com")}` },
+        { name: "Arquivos PDF (Currículos, editais)", url: `https://www.google.com/search?q=${encodeURIComponent(exactName + " filetype:pdf")}` },
+        { name: "Processos (JusBrasil)", url: `https://www.google.com/search?q=${encodeURIComponent(exactName + localString + " site:jusbrasil.com.br")}` }
     ];
 
     const d = new Date();
     const timeString = d.toTimeString().split(' ')[0];
 
-    // Passos de processamento na interface
     const steps = [
         `[${timeString}] <span class="log-info">SYS</span> Iniciando motor de Dorking para: <span class="log-highlight">${nome}</span>`,
-        `[${timeString}] <span class="log-info">SYS</span> Estruturando sintaxe de busca avançada...`,
-        `[${timeString}] <span class="log-info">NET</span> Contornando limitações de CORS (Delegando conexões para Client-Side)...`,
-        `[${timeString}] <span class="log-highlight">OK</span> Sintaxes geradas.`,
+        `[${timeString}] <span class="log-info">SYS</span> Preparando ambiente do Dossiê...`,
+        `[${timeString}] <span class="log-info">NET</span> Gerando sintaxes de interceptação (Google Dorks)...`,
+        `[${timeString}] <span class="log-highlight">OK</span> Sintaxes prontas!`,
         `<br>`,
         `<b>[!] LINKS PRONTOS PARA EXECUÇÃO:</b>`,
     ];
 
-    // Adiciona os links dork criados no log
     dorks.forEach(dork => {
         steps.push(`  ➤ <a href="${dork.url}" target="_blank" class="dork-link">[ABRIR]</a> ${dork.name}`);
     });
 
     steps.push(`<br>`);
-    steps.push(`[${timeString}] <span class="log-info">SYS</span> Clique nos links acima. Cada link executa uma requisição direta no banco de dados do Google. O resultado da busca já estará filtrado.`);
+    steps.push(`[${timeString}] <span class="log-info">DICA:</span> Clique em [ABRIR] para acessar os dados no Google, e anote as descobertas ao lado no seu Dossiê!`);
 
-    // Loop que exibe os passos com atrasos realistas
     for (let i = 0; i < steps.length; i++) {
-        const speed = steps[i].includes('<a href') ? 5 : 20; // links aparecem mais rápido
+        const speed = steps[i].includes('<a href') ? 5 : 15; 
         await typeLine(steps[i], speed);
-        
-        let delay = (Math.random() * 300) + 150;
+        let delay = (Math.random() * 250) + 100;
         await sleep(delay);
     }
 }
@@ -106,7 +98,6 @@ function typeLine(htmlText, speed) {
         div.className = 'log-entry typing-line';
         log.appendChild(div);
         
-        // Renderiza conteúdo que tem HTML imediatamente
         if (htmlText.includes('<')) {
             div.innerHTML = htmlText;
             div.classList.remove('typing-line');
@@ -118,7 +109,7 @@ function typeLine(htmlText, speed) {
                 if (i < htmlText.length) {
                     div.innerHTML += htmlText.charAt(i);
                     i++;
-                    log.scrollTop = log.scrollHeight; // Auto-scroll
+                    log.scrollTop = log.scrollHeight;
                     setTimeout(typeWriter, speed);
                 } else {
                     div.classList.remove('typing-line');

@@ -13,12 +13,12 @@
         <header>
             <div class="status-bar">
                 <span>STATUS: <span class="online">ONLINE</span></span>
-                <span>SYSTEM: <span class="sys-name">OSINT-CORE v3.0 (Dorking Engine)</span></span>
+                <span>SYSTEM: <span class="sys-name">OSINT-CORE v3.5 (Dorking + Dossiê)</span></span>
             </div>
             <h1>>_ OSINT Analytics Panel</h1>
             <div class="explanation">
-                <p><strong>O que é OSINT?</strong> (Open-Source Intelligence) é a inteligência baseada em fontes abertas. Este painel agora atua como um <strong>Motor de Dorking Real</strong>.</p>
-                <p>Ele pegará o nome informado e criará requisições de busca avançadas em motores de pesquisa (Google Dorks) para localizar currículos em PDF, perfis públicos no LinkedIn, e menções em bancos de dados (como arquivos vazados no Pastebin).</p>
+                <p><strong>Aviso de Sistema:</strong> Como este site roda direto no seu navegador sem um servidor (Backend), sistemas de segurança bloqueiam que ele "leia" os sites do Google ou LinkedIn sozinho. Por isso, os links gerados são para <strong>você abrir</strong> e investigar.</p>
+                <p>Para compensar isso, adicionei a Área de <strong>Dossiê de Resultados</strong> abaixo. Ao clicar nos links e encontrar as informações, você pode preencher o painel para organizar tudo em um lugar só!</p>
             </div>
         </header>
 
@@ -36,16 +36,49 @@
                 <button class="hack-button start-btn" onclick="startSearch()">>> EXECUTAR BUSCA REAL (DORKS) <<</button>
             </div>
 
-            <div id="log-container">
-                <div class="log-header">
-                    <h3>OUTPUT TERMINAL_</h3>
-                    <div class="dots">
-                        <span class="dot red"></span>
-                        <span class="dot yellow"></span>
-                        <span class="dot green"></span>
+            <!-- Alteração: Layout em Grid dividindo Terminal de um lado e Dossiê do outro -->
+            <div class="workspace-grid hidden" id="workspace">
+                
+                <!-- Terminal Log (Esquerda) -->
+                <div id="log-container">
+                    <div class="log-header">
+                        <h3>OUTPUT TERMINAL_ (Links de Busca)</h3>
+                        <div class="dots">
+                            <span class="dot red"></span>
+                            <span class="dot yellow"></span>
+                            <span class="dot green"></span>
+                        </div>
+                    </div>
+                    <div id="log"></div>
+                </div>
+
+                <!-- Painel de Resultados (Direita) -->
+                <div id="dossier-container">
+                    <div class="log-header" style="background: #064e3b; border-color: #34d399;">
+                        <h3 style="color: #6ee7b7;">📋 PAINEL DE RESULTADOS (DOSSIÊ)</h3>
+                    </div>
+                    <div class="dossier-content">
+                        <p class="dossier-desc">Preencha com os dados encontrados através dos links do terminal:</p>
+                        
+                        <label>👤 Nome Confirmado:</label>
+                        <input type="text" class="dossier-input" placeholder="Ex: João Silva...">
+                        
+                        <label>💼 Profissão / Empresa:</label>
+                        <input type="text" class="dossier-input" placeholder="Ex: Trabalha na Empresa X...">
+                        
+                        <label>📍 Localização Confirmada:</label>
+                        <input type="text" class="dossier-input" placeholder="Ex: Cidade, Estado...">
+                        
+                        <label>🔗 Links e Redes Sociais:</label>
+                        <textarea class="dossier-textarea" placeholder="Cole os links do LinkedIn, Facebook, JusBrasil, etc..."></textarea>
+                        
+                        <label>📝 Outras Informações (Idade, Processos, Emails):</label>
+                        <textarea class="dossier-textarea" placeholder="anotações adicionais..."></textarea>
+                        
+                        <button class="hack-button export-btn" onclick="alert('Funcionalidade de Exportar PDF/TXT pode ser adicionada no futuro!')">🖨️ EXPORTAR RELATÓRIO</button>
                     </div>
                 </div>
-                <div id="log"></div>
+
             </div>
         </main>
     </div>
