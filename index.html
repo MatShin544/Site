@@ -3,32 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OSINT Terminal</title>
+    <title>Sistema OSINT Analytics</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
+    <div class="scanlines"></div>
     <div id="terminal">
-        <div id="header">
-            <h1><span class="prompt">root@osint:~#</span> ./start_tracker.sh</h1>
-            <p>Selecione o módulo de busca:</p>
-            <div id="menu">
-                <button class="hack-button" onclick="showForm('Nome')">[ NOME ]</button>
-                <button class="hack-button" onclick="showForm('Instagram')">[ INSTAGRAM ]</button>
-                <button class="hack-button" onclick="showForm('Facebook')">[ FACEBOOK ]</button>
-                <button class="hack-button" onclick="showForm('TikTok')">[ TIKTOK ]</button>
+        <header>
+            <div class="status-bar">
+                <span>STATUS: <span class="online">ONLINE</span></span>
+                <span>SYSTEM: <span class="sys-name">OSINT-CORE v3.0 (Dorking Engine)</span></span>
             </div>
-        </div>
+            <h1>>_ OSINT Analytics Panel</h1>
+            <div class="explanation">
+                <p><strong>O que é OSINT?</strong> (Open-Source Intelligence) é a inteligência baseada em fontes abertas. Este painel agora atua como um <strong>Motor de Dorking Real</strong>.</p>
+                <p>Ele pegará o nome informado e criará requisições de busca avançadas em motores de pesquisa (Google Dorks) para localizar currículos em PDF, perfis públicos no LinkedIn, e menções em bancos de dados (como arquivos vazados no Pastebin).</p>
+            </div>
+        </header>
 
-        <div id="form-container" class="hidden">
-            <h2 id="form-title"></h2>
-            <div id="form-content"></div>
-            <button class="hack-button" onclick="startSearch()">[ INICIAR BUSCA ]</button>
-        </div>
+        <main>
+            <p class="instruction">Inicie a varredura inserindo os dados do alvo:</p>
+            <div id="menu">
+                <button class="hack-button" onclick="showForm('Nome')">
+                    <span class="icon">🔍</span> Rastreamento Web por Nome
+                </button>
+            </div>
 
-        <div id="log-container">
-            <h3>&gt; TERMINAL LOG:</h3>
-            <div id="log"></div>
-        </div>
+            <div id="form-container" class="hidden">
+                <h2 id="form-title"></h2>
+                <div id="form-content"></div>
+                <button class="hack-button start-btn" onclick="startSearch()">>> EXECUTAR BUSCA REAL (DORKS) <<</button>
+            </div>
+
+            <div id="log-container">
+                <div class="log-header">
+                    <h3>OUTPUT TERMINAL_</h3>
+                    <div class="dots">
+                        <span class="dot red"></span>
+                        <span class="dot yellow"></span>
+                        <span class="dot green"></span>
+                    </div>
+                </div>
+                <div id="log"></div>
+            </div>
+        </main>
     </div>
     <script src="script.js"></script>
 </body>

@@ -1,100 +1,132 @@
-let currentModule = '';
-
 function showForm(module) {
-    currentModule = module;
     const formContainer = document.getElementById('form-container');
     const formTitle = document.getElementById('form-title');
     const formContent = document.getElementById('form-content');
 
     formContainer.classList.remove('hidden');
-    formTitle.innerHTML = `<span class="prompt">></span> Carga do Módulo [${module}] efetuada. Aguardando parâmetros...`;
+    formTitle.innerHTML = `> Módulo: <span style="color: #fff">Geração de Dorks (Investigação Nominal)</span>`;
 
-    if (module === 'Nome') {
-        formContent.innerHTML = `
-            <label>> NOME COMPLETO:</label>
-            <input type="text" id="input-nome" placeholder="ex: John Doe" autocomplete="off">
-            <label>> IDADE (opcional):</label>
-            <input type="text" id="input-idade" placeholder="ex: 35" autocomplete="off">
-            <label>> LOCAL / TRABALHO (opcional):</label>
-            <input type="text" id="input-local" placeholder="ex: Acme Corp, New York" autocomplete="off">
-        `;
-    } else {
-        formContent.innerHTML = `
-            <label>> TARGET USERNAME (${module.toUpperCase()}):</label>
-            <input type="text" id="input-username" placeholder="ex: target_user123" autocomplete="off">
-        `;
-    }
+    formContent.innerHTML = `
+        <div class="input-group">
+            <label>NOME COMPLETO DO ALVO:</label>
+            <input type="text" id="input-nome" placeholder="ex: João da Silva" autocomplete="off">
+        </div>
+        <div class="input-group">
+            <label>CIDADE / ESTADO (OPCIONAL):</label>
+            <input type="text" id="input-local" placeholder="ex: São Paulo" autocomplete="off">
+        </div>
+    `;
+    
+    // Auto focus the first input
+    setTimeout(() => {
+        const firstInput = formContent.querySelector('input');
+        if(firstInput) firstInput.focus();
+    }, 100);
 }
 
 async function startSearch() {
     const log = document.getElementById('log');
+    
+    // Animação inicial
+    log.style.opacity = '0.5';
+    setTimeout(() => log.style.opacity = '1', 200);
+
     log.innerHTML = ''; // Limpar log anterior
 
-    let targetInfo = '';
-    let extraInfo = '';
-    if (currentModule === 'Nome') {
-        const nome = document.getElementById('input-nome').value || 'Desconhecido';
-        const idade = document.getElementById('input-idade').value || 'N/A';
-        const local = document.getElementById('input-local').value || 'N/A';
-        targetInfo = nome;
-        extraInfo = `(Idade: ${idade}, Local: ${local})`;
-    } else {
-        const username = document.getElementById('input-username').value || 'Desconhecido';
-        targetInfo = username;
+    const nome = document.getElementById('input-nome').value.trim();
+    if (!nome) {
+        alert("Favor inserir o nome do alvo.");
+        return;
     }
-
-    const d = new Date();
-    const timestamp = d.toISOString();
-
-    const steps = [
-        `[${timestamp}] Inicializando sequências de varredura...`,
-        `[+] Carregando módulo base: ${currentModule}`,
-        `[+] Estabelecendo túnel criptografado via proxies dinâmicos...`,
-        `[+] Túnel estabelecido com sucesso. IP mascarado.`,
-        `[*] Alvo selecionado: [${targetInfo}] ${extraInfo}`,
-        `[*] Consultando bibliotecas públicas e APIs abertas...`,
-        `[!] AVISO: Esta é uma simulação front-end. Dados complexos exigem backend de OSINT dedicado.`,
-        `[-] Cruzando registros em bases de dados abertas...`,
-        `[-] Simulando extração de DOM elements... OK`,
-        `[+] Footprints digitais encontrados. Analisando...`,
-        `[*] Decodificando metadados e compondo relatório parcial...`,
-        `======================================================`,
-        `[+] RELATÓRIO DO ALVO (SIMULAÇÃO):`,
-        `    - Identificação: ${targetInfo}`,
-        `    - Possível Email Associado: ${targetInfo.replace(/[^a-zA-Z0-9]/g, '').toLowerCase() || 'alvo'}@email-simulado.com`,
-        `    - Status Operacional: Ativo (3 redes cruzadas)`,
-        `    - Extração de Bio: "Usuário padrão do sistema. Log de OSINT gerado por IA."`,
-        `======================================================`,
-        `[+] Varredura concluída. Limpando rastro digital...`,
-        `[+] Desconectado.`
+    const local = document.getElementById('input-local').value.trim();
+    
+    // Construção das Dorks
+    const exactName = `"${nome}"`;
+    const localString = local ? ` "${local}"` : '';
+    
+    // Array com as URLs formatadas
+    const dorks = [
+        {
+            name: "Busca Geral Exata",
+            url: `https://www.google.com/search?q=${encodeURIComponent(exactName + localString)}`
+        },
+        {
+            name: "Busca no LinkedIn (Perfis ou menções)",
+            url: `https://www.google.com/search?q=${encodeURIComponent(exactName + localString + " site:linkedin.com")}`
+        },
+        {
+            name: "Vazamentos / Textos no Pastebin",
+            url: `https://www.google.com/search?q=${encodeURIComponent(exactName + " site:pastebin.com")}`
+        },
+        {
+            name: "Buscador de PDFs Públicos (Currículos, diários)",
+            url: `https://www.google.com/search?q=${encodeURIComponent(exactName + " filetype:pdf")}`
+        },
+        {
+            name: "Busca no JusBrasil (Processos Jurídicos)",
+            url: `https://www.google.com/search?q=${encodeURIComponent(exactName + localString + " site:jusbrasil.com.br")}`
+        }
     ];
 
+    const d = new Date();
+    const timeString = d.toTimeString().split(' ')[0];
+
+    // Passos de processamento na interface
+    const steps = [
+        `[${timeString}] <span class="log-info">SYS</span> Iniciando motor de Dorking para: <span class="log-highlight">${nome}</span>`,
+        `[${timeString}] <span class="log-info">SYS</span> Estruturando sintaxe de busca avançada...`,
+        `[${timeString}] <span class="log-info">NET</span> Contornando limitações de CORS (Delegando conexões para Client-Side)...`,
+        `[${timeString}] <span class="log-highlight">OK</span> Sintaxes geradas.`,
+        `<br>`,
+        `<b>[!] LINKS PRONTOS PARA EXECUÇÃO:</b>`,
+    ];
+
+    // Adiciona os links dork criados no log
+    dorks.forEach(dork => {
+        steps.push(`  ➤ <a href="${dork.url}" target="_blank" class="dork-link">[ABRIR]</a> ${dork.name}`);
+    });
+
+    steps.push(`<br>`);
+    steps.push(`[${timeString}] <span class="log-info">SYS</span> Clique nos links acima. Cada link executa uma requisição direta no banco de dados do Google. O resultado da busca já estará filtrado.`);
+
+    // Loop que exibe os passos com atrasos realistas
     for (let i = 0; i < steps.length; i++) {
-        await typeLine(steps[i], (Math.random() * 20) + 10); // Velocidade variável
-        await sleep((Math.random() * 500) + 200); // Pausa variável entre linhas
+        const speed = steps[i].includes('<a href') ? 5 : 20; // links aparecem mais rápido
+        await typeLine(steps[i], speed);
+        
+        let delay = (Math.random() * 300) + 150;
+        await sleep(delay);
     }
 }
 
-function typeLine(text, speed) {
+function typeLine(htmlText, speed) {
     return new Promise(resolve => {
         const log = document.getElementById('log');
         const div = document.createElement('div');
         div.className = 'log-entry typing-line';
         log.appendChild(div);
-
-        let i = 0;
-        function typeWriter() {
-            if (i < text.length) {
-                div.innerHTML += text.charAt(i);
-                i++;
-                log.scrollTop = log.scrollHeight; // Auto-scroll
-                setTimeout(typeWriter, speed);
-            } else {
-                div.classList.remove('typing-line');
-                resolve();
+        
+        // Renderiza conteúdo que tem HTML imediatamente
+        if (htmlText.includes('<')) {
+            div.innerHTML = htmlText;
+            div.classList.remove('typing-line');
+            log.scrollTop = log.scrollHeight;
+            resolve();
+        } else {
+            let i = 0;
+            function typeWriter() {
+                if (i < htmlText.length) {
+                    div.innerHTML += htmlText.charAt(i);
+                    i++;
+                    log.scrollTop = log.scrollHeight; // Auto-scroll
+                    setTimeout(typeWriter, speed);
+                } else {
+                    div.classList.remove('typing-line');
+                    resolve();
+                }
             }
+            typeWriter();
         }
-        typeWriter();
     });
 }
 
