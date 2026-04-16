@@ -20,7 +20,7 @@ body {
     line-height: 1.6;
 }
 
-/* Navbar */
+/* Navbar e Abas */
 .navbar {
     background-color: var(--navbar-bg);
     border-bottom: 1px solid var(--border-color);
@@ -40,6 +40,28 @@ body {
     color: var(--accent-color);
 }
 
+.nav-links {
+    display: flex;
+    gap: 15px;
+}
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-muted);
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+.nav-links a:hover {
+    background: #f1f5f9;
+}
+.nav-links a.active {
+    background: #eff6ff;
+    color: var(--accent-color);
+}
+
+
+/* Layout Base */
 .container {
     max-width: 1000px;
     margin: 40px auto;
@@ -161,50 +183,27 @@ input:focus {
 .value { font-size: 1.1rem; }
 .value.highlight { font-size: 1.4rem; font-weight: 700; color: var(--primary-color); }
 
-/* NOTÍCIAS (MÍDIA) */
-.news-container {
-    background: #f1f5f9;
-    border-radius: 8px;
-    padding: 20px;
-}
-.news-item {
-    border-bottom: 1px solid #cbd5e1;
-    padding-bottom: 15px;
-    margin-bottom: 15px;
-}
-.news-item:last-child {
-    border-bottom: none;
-    padding-bottom: 0;
-    margin-bottom: 0;
-}
-.news-title {
-    font-weight: 700;
-    color: #1e293b;
-    font-size: 1.15rem;
-    margin-bottom: 8px;
-}
-.news-desc {
-    color: #475569;
-    font-size: 1rem;
-    line-height: 1.5;
-    margin-bottom: 10px;
-}
-.news-source {
-    font-size: 0.85rem;
-    color: #2563eb;
-    text-transform: uppercase;
-    font-weight: 700;
-}
-
-/* TABELA DOS LINKS */
+/* TABELA DOS LINKS ESPECIFICA COM O BOTAO CORRIGIDO E ALINHADO */
 .data-table { width: 100%; border-collapse: collapse; }
-.data-table th, .data-table td { padding: 15px 20px; text-align: left; border-bottom: 1px solid var(--border-color); }
+.data-table th, .data-table td { padding: 15px 20px; text-align: left; border-bottom: 1px solid var(--border-color); vertical-align: middle; }
 .data-table th { background: #f8fafc; font-size: 0.85rem; color: var(--text-muted); }
+
+/* CORREÇÃO DO BOTÃO "INVESTIGAR" PARA FICAR INTEIRO */
 .link-action {
-    color: var(--accent-color); font-weight: bold; text-decoration: none; padding: 6px 12px;
-    background: #eff6ff; border-radius: 6px; border: 1px solid #bfdbfe; transition: 0.2s;
+    display: inline-flex; /* Mantém ícone e texto juntos sem quebrar linha */
+    align-items: center;
+    justify-content: center;
+    color: white; 
+    font-weight: bold; 
+    text-decoration: none; 
+    padding: 10px 18px;
+    background: var(--accent-color); 
+    border-radius: 6px; 
+    transition: 0.2s;
+    white-space: nowrap; /* Tira qualquer risco de quebrar texto ao meio */
+    box-shadow: 0 2px 4px rgba(37,99,235,0.2);
 }
-.link-action:hover { background: var(--accent-color); color: white; }
+.link-action:hover { background: #1d4ed8; color: white; transform: translateY(-1px); }
 
 @media print {
     .btn, .navbar { display: none; }

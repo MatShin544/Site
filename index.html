@@ -14,14 +14,18 @@
                 <span class="icon">🔍</span>
                 <span class="brand-text">Intelligence SaaS</span>
             </div>
+            <!-- Novas Abas -->
+            <div class="nav-links" id="main-nav">
+                <a href="#" class="active" onclick="switchTab('search-view', this)">Painel de Busca</a>
+            </div>
         </div>
     </nav>
 
     <!-- TELA 1: A BUSCA -->
     <div class="container" id="search-view">
         <div class="search-hero">
-            <h1>Plataforma de Investigação Dinâmica</h1>
-            <p>Insira os dados iniciais do alvo. O sistema processará o nome digitado para gerar mapeamentos puros focados em documentos públicos e dados indexáveis.</p>
+            <h1>Plataforma de Investigação Direta</h1>
+            <p>Insira os dados iniciais do alvo. O sistema processará o nome e apontará URLs diretas.</p>
             
             <div class="search-form">
                 <div class="input-group">
@@ -29,27 +33,26 @@
                     <input type="text" id="target-name" placeholder="Ex: Nome da pessoa aqui..." value="">
                 </div>
                 <div class="input-group">
-                    <label>CIDADE / ESTADO (Opcional - Ajuda a refinar)</label>
-                    <input type="text" id="target-loc" placeholder="Ex: Cidade, País..." value="">
+                    <label>ESTADO / UF (Opcional - Ajuda a refinar homônimos)</label>
+                    <input type="text" id="target-loc" placeholder="Ex: SP, RJ, MG..." value="">
                 </div>
                 
                 <button class="btn btn-large btn-primary" onclick="iniciarPesquisa()" id="search-btn">
-                    🔎 Iniciar Mapeamento Profundo (Dados & Docs)
+                    🔎 Iniciar Mapeamento Direto
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- TELA 2: OS RESULTADOS OBTIDOS -->
+    <!-- TELA 2: DOSSIÊ (RESULTADOS PRINCIPAIS) -->
     <div class="container hidden" id="results-view">
         <header class="report-header">
             <div class="header-info">
                 <h1>Dossiê do Alvo</h1>
-                <p>Status: <span class="badge success">Pesquisa Dinâmica Completa</span></p>
+                <p>Status: <span class="badge success">Pesquisa Completa</span></p>
             </div>
             <div class="header-actions">
-                <button class="btn" onclick="voltarParaBusca()">Nova Busca</button>
-                <button class="btn btn-primary" onclick="window.print()">🖨️ Exportar Perfil</button>
+                <button class="btn btn-primary" onclick="window.print()">🖨️ Exportar PDF</button>
             </div>
         </header>
 
@@ -57,7 +60,7 @@
             <!-- Dados Identificados -->
             <div class="card">
                 <div class="card-header">
-                    <h3>👤 Perfil Base Identificado</h3>
+                    <h3>👤 Perfil e Demografia</h3>
                 </div>
                 <div class="card-body">
                     <div class="info-group">
@@ -65,59 +68,59 @@
                         <p id="res-nome" class="value highlight"></p>
                     </div>
                     <div class="info-group">
-                        <label>Filtro de Localização</label>
-                        <p id="res-loc" class="value"></p>
+                        <label>Pessoas Registradas com este Exato Nome no Brasil</label>
+                        <p id="res-count" class="value" style="font-weight:bold; color: #ef4444; font-size: 1.3rem;"></p>
                     </div>
                 </div>
             </div>
 
-            <!-- Resumo Analítico -->
-            <div class="card">
-                <div class="card-header">
-                    <h3>📊 Avaliação Documental O.S.I.N.T</h3>
-                </div>
-                <div class="card-body">
-                    <div class="info-group">
-                        <label>Segurança de Coleta Restrita</label>
-                        <p class="value" style="font-size: 0.95rem; color: #475569;">
-                            Por questões estritas de sigilo e para não violar diretrizes do navegador, processos judiciais sigilosos em andamento ou currículos completos armazenados em bancos públicos indexados do JusBrasil/Google deverão ser acessados pontualmente através dos injetores configurados abaixo.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- RESULTADOS O.S.I.N.T -->
+            <!-- TABELA REAL COM LINKS PARA O ALVO (DIRETOS) -->
             <div class="card full-width">
                 <div class="card-header">
-                    <h3 style="color: #2563eb;">🕸️ Mapeamento de O.S.I.N.T e Inteligência de Documentos</h3>
-                </div>
-                <div class="card-body">
-                    <div id="res-news" class="news-container">
-                        <!-- JS injeta os furos extraídos aqui dinamicamente -->
-                    </div>
-                </div>
-            </div>
-
-            <!-- TABELA REAL COM LINKS PARA O ALVO -->
-            <div class="card full-width">
-                <div class="card-header">
-                    <h3>🔗 Central de Varredura de Ocorrências e Documentos</h3>
-                    <p style="font-size: 0.85rem; color:#6b7280; margin-top:5px;">O motor preparou links diretos baseados no nome acima. Ao acessar as abas, a busca filtrará por processos jurídicos atrelados ou PDFs liberados abertamente em vazamentos web.</p>
+                    <h3>🔗 Links Diretos: Vasculhar Bases Nacionais</h3>
+                    <p style="font-size: 0.85rem; color:#6b7280; margin-top:5px;">Estes botões não usam o Google. Eles fazem a busca <strong>DIRETO</strong> no site correspondente pesquisando o nome que você inseriu.</p>
                 </div>
                 <div class="card-body" style="padding: 0;">
                     <table class="data-table">
                         <thead>
                             <tr>
-                                <th>Alvo da Rede</th>
-                                <th>Tipo de Registro</th>
-                                <th>Ação Direta</th>
+                                <th>Portal Alvo</th>
+                                <th>Tipo de Registro e Busca</th>
+                                <th style="text-align: right;">Ação Direta</th>
                             </tr>
                         </thead>
                         <tbody id="res-links">
-                            <!-- JS preenche os links reais aqui -->
+                            <!-- JS preenche -->
                         </tbody>
                     </table>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TELA 3: ABA LISTA DE HOMÔNIMOS -->
+    <div class="container hidden" id="list-view">
+        <header class="report-header">
+            <div class="header-info">
+                <h1>Lista de Homônimos / Perfis Similares</h1>
+                <p>Amostraragem de indivíduos identificados com o nome idêntico ou similar.</p>
+            </div>
+        </header>
+
+        <div class="card full-width">
+            <div class="card-body" style="padding: 0;">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Nome Potencial</th>
+                            <th>Localidade (Estimada)</th>
+                            <th>Risco de Confusão</th>
+                        </tr>
+                    </thead>
+                    <tbody id="homonimos-list">
+                        <!-- JS vai simular as pessoas com esse nome -->
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -126,8 +129,8 @@
     <div id="loading-overlay" class="overlay hidden">
         <div class="loader-box">
             <div class="spinner"></div>
-            <h3 id="loader-status">Iniciando compilação de dados do alvo...</h3>
-            <p>Por favor, aguarde enquanto vasculhamos atalhos judiciais, currículos e notícias.</p>
+            <h3 id="loader-status">Consultando estatísticas de nome...</h3>
+            <p>Por favor, aguarde enquanto montamos os links nativos e calculamos os homônimos.</p>
         </div>
     </div>
 
