@@ -3,85 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema OSINT Analytics</title>
+    <title>Relatório de Análise - OSINT Analyzer</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="scanlines"></div>
-    <div id="terminal">
-        <header>
-            <div class="status-bar">
-                <span>STATUS: <span class="online">ONLINE</span></span>
-                <span>SYSTEM: <span class="sys-name">OSINT-CORE v3.5 (Dorking + Dossiê)</span></span>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="brand">
+                <span class="icon">🔍</span>
+                <span class="brand-text">OSINT Analyzer Pro</span>
             </div>
-            <h1>>_ OSINT Analytics Panel</h1>
-            <div class="explanation">
-                <p><strong>Aviso de Sistema:</strong> Como este site roda direto no seu navegador sem um servidor (Backend), sistemas de segurança bloqueiam que ele "leia" os sites do Google ou LinkedIn sozinho. Por isso, os links gerados são para <strong>você abrir</strong> e investigar.</p>
-                <p>Para compensar isso, adicionei a Área de <strong>Dossiê de Resultados</strong> abaixo. Ao clicar nos links e encontrar as informações, você pode preencher o painel para organizar tudo em um lugar só!</p>
+            <div class="nav-links">
+                <a href="#" class="active">Relatório Customizável</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header class="report-header">
+            <div class="header-info">
+                <h1>Relatório de Análise de Perfil</h1>
+                <p>Status da Varredura: <span class="badge success">Pronto para Edição</span> • 💡 <strong>Você pode clicar e digitar diretamente nos campos abaixo!</strong></p>
+            </div>
+            <div class="header-actions">
+                <!-- O botão onClick="window.print()" funciona perfeitamente para salvar o PDF das edições feitas -->
+                <button class="btn btn-primary" onclick="window.print()">Exportar PDF Final</button>
             </div>
         </header>
 
-        <main>
-            <p class="instruction">Inicie a varredura inserindo os dados do alvo:</p>
-            <div id="menu">
-                <button class="hack-button" onclick="showForm('Nome')">
-                    <span class="icon">🔍</span> Rastreamento Web por Nome
-                </button>
-            </div>
-
-            <div id="form-container" class="hidden">
-                <h2 id="form-title"></h2>
-                <div id="form-content"></div>
-                <button class="hack-button start-btn" onclick="startSearch()">>> EXECUTAR BUSCA REAL (DORKS) <<</button>
-            </div>
-
-            <!-- Alteração: Layout em Grid dividindo Terminal de um lado e Dossiê do outro -->
-            <div class="workspace-grid hidden" id="workspace">
-                
-                <!-- Terminal Log (Esquerda) -->
-                <div id="log-container">
-                    <div class="log-header">
-                        <h3>OUTPUT TERMINAL_ (Links de Busca)</h3>
-                        <div class="dots">
-                            <span class="dot red"></span>
-                            <span class="dot yellow"></span>
-                            <span class="dot green"></span>
-                        </div>
-                    </div>
-                    <div id="log"></div>
+        <div class="dashboard-grid">
+            <!-- Card 1: Identidade -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>👤 Identidade Confirmada</h3>
                 </div>
-
-                <!-- Painel de Resultados (Direita) -->
-                <div id="dossier-container">
-                    <div class="log-header" style="background: #064e3b; border-color: #34d399;">
-                        <h3 style="color: #6ee7b7;">📋 PAINEL DE RESULTADOS (DOSSIÊ)</h3>
+                <div class="card-body">
+                    <div class="info-group">
+                        <label>Nome Completo</label>
+                        <input type="text" class="editable-input value highlight" placeholder="Digite o nome completo do alvo...">
                     </div>
-                    <div class="dossier-content">
-                        <p class="dossier-desc">Preencha com os dados encontrados através dos links do terminal:</p>
-                        
-                        <label>👤 Nome Confirmado:</label>
-                        <input type="text" class="dossier-input" placeholder="Ex: João Silva...">
-                        
-                        <label>💼 Profissão / Empresa:</label>
-                        <input type="text" class="dossier-input" placeholder="Ex: Trabalha na Empresa X...">
-                        
-                        <label>📍 Localização Confirmada:</label>
-                        <input type="text" class="dossier-input" placeholder="Ex: Cidade, Estado...">
-                        
-                        <label>🔗 Links e Redes Sociais:</label>
-                        <textarea class="dossier-textarea" placeholder="Cole os links do LinkedIn, Facebook, JusBrasil, etc..."></textarea>
-                        
-                        <label>📝 Outras Informações (Idade, Processos, Emails):</label>
-                        <textarea class="dossier-textarea" placeholder="anotações adicionais..."></textarea>
-                        
-                        <button class="hack-button export-btn" onclick="alert('Funcionalidade de Exportar PDF/TXT pode ser adicionada no futuro!')">🖨️ EXPORTAR RELATÓRIO</button>
+                    <div class="info-group">
+                        <label>Idade Estimada / Data de Nasc.</label>
+                        <input type="text" class="editable-input value" placeholder="Ex: 34 anos...">
+                    </div>
+                    <div class="info-group">
+                        <label>Localização Principal</label>
+                        <input type="text" class="editable-input value" placeholder="Ex: São Paulo, SP...">
                     </div>
                 </div>
-
             </div>
-        </main>
+
+            <!-- Card 2: Contato e Vínculos -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>📞 Contatos e Profissão</h3>
+                </div>
+                <div class="card-body">
+                    <div class="info-group">
+                        <label>Ocupação / Empresa Mencionada</label>
+                        <input type="text" class="editable-input value" placeholder="Onde o alvo trabalha?">
+                    </div>
+                    <div class="info-group">
+                        <label>Possível E-mail ou Telefone</label>
+                        <input type="text" class="editable-input value" placeholder="Ex: alvo@email.com / (11) 9999-9999">
+                    </div>
+                    <div class="info-group">
+                        <label>Documentação / Registros JusBrasil</label>
+                        <input type="text" class="editable-input value" placeholder="Anote eventuais processos aqui...">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3: Presença Digital (Full Width) -->
+            <div class="card full-width">
+                <div class="card-header">
+                    <h3>🌐 Presença Digital (Links e Pegadas)</h3>
+                </div>
+                <div class="card-body">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th width="20%">Plataforma</th>
+                                <th width="50%">Cole o Link Encontrado</th>
+                                <th width="30%">Status do Perfil</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>LinkedIn</strong></td>
+                                <td><input type="text" class="editable-input" placeholder="https://linkedin.com/in/perfil..."></td>
+                                <td><input type="text" class="editable-input" placeholder="Ex: Ativo / Desatualizado"></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Facebook</strong></td>
+                                <td><input type="text" class="editable-input" placeholder="https://facebook.com/perfil..."></td>
+                                <td><input type="text" class="editable-input" placeholder="Ex: Privado"></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Instagram</strong></td>
+                                <td><input type="text" class="editable-input" placeholder="https://instagram.com/perfil..."></td>
+                                <td><input type="text" class="editable-input" placeholder="Ex: Público"></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Outra Fonte (JusBrasil, etc)</strong></td>
+                                <td><input type="text" class="editable-input" placeholder="Cole qualquer outro link aberto..."></td>
+                                <td><input type="text" class="editable-input" placeholder="Relevante"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Card 4: Alertas e Vazamentos -->
+            <div class="card full-width alert-card">
+                <div class="card-header">
+                    <h3>⚠️ Monitoramento de Vazamentos e Anotações Extras</h3>
+                </div>
+                <div class="card-body">
+                    <textarea class="editable-textarea alert-text" rows="3" placeholder="Digite aqui se encontrou o email em algum vazamento (Breach) ou se você tem alguma anotação técnica sobre a vítima da investigação..."></textarea>
+                </div>
+            </div>
+        </div>
     </div>
-    <script src="script.js"></script>
 </body>
 </html>
