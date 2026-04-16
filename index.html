@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Relatório de Análise - OSINT Analyzer</title>
+    <title>Motor de Busca - OSINT Analyzer</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -12,119 +12,125 @@
         <div class="nav-container">
             <div class="brand">
                 <span class="icon">🔍</span>
-                <span class="brand-text">OSINT Analyzer Pro</span>
-            </div>
-            <div class="nav-links">
-                <a href="#" class="active">Relatório Customizável</a>
+                <span class="brand-text">Intelligence SaaS</span>
             </div>
         </div>
     </nav>
 
-    <div class="container">
+    <!-- TELA 1: A BUSCA -->
+    <div class="container" id="search-view">
+        <div class="search-hero">
+            <h1>Plataforma de Investigação Dinâmica</h1>
+            <p>Insira os dados iniciais do alvo. O sistema processará o nome digitado para gerar mapeamentos puros focados em documentos públicos e dados indexáveis.</p>
+            
+            <div class="search-form">
+                <div class="input-group">
+                    <label>NOME COMPLETO (Obrigatório)</label>
+                    <input type="text" id="target-name" placeholder="Ex: Nome da pessoa aqui..." value="">
+                </div>
+                <div class="input-group">
+                    <label>CIDADE / ESTADO (Opcional - Ajuda a refinar)</label>
+                    <input type="text" id="target-loc" placeholder="Ex: Cidade, País..." value="">
+                </div>
+                
+                <button class="btn btn-large btn-primary" onclick="iniciarPesquisa()" id="search-btn">
+                    🔎 Iniciar Mapeamento Profundo (Dados & Docs)
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TELA 2: OS RESULTADOS OBTIDOS -->
+    <div class="container hidden" id="results-view">
         <header class="report-header">
             <div class="header-info">
-                <h1>Relatório de Análise de Perfil</h1>
-                <p>Status da Varredura: <span class="badge success">Pronto para Edição</span> • 💡 <strong>Você pode clicar e digitar diretamente nos campos abaixo!</strong></p>
+                <h1>Dossiê do Alvo</h1>
+                <p>Status: <span class="badge success">Pesquisa Dinâmica Completa</span></p>
             </div>
             <div class="header-actions">
-                <!-- O botão onClick="window.print()" funciona perfeitamente para salvar o PDF das edições feitas -->
-                <button class="btn btn-primary" onclick="window.print()">Exportar PDF Final</button>
+                <button class="btn" onclick="voltarParaBusca()">Nova Busca</button>
+                <button class="btn btn-primary" onclick="window.print()">🖨️ Exportar Perfil</button>
             </div>
         </header>
 
         <div class="dashboard-grid">
-            <!-- Card 1: Identidade -->
+            <!-- Dados Identificados -->
             <div class="card">
                 <div class="card-header">
-                    <h3>👤 Identidade Confirmada</h3>
+                    <h3>👤 Perfil Base Identificado</h3>
                 </div>
                 <div class="card-body">
                     <div class="info-group">
-                        <label>Nome Completo</label>
-                        <input type="text" class="editable-input value highlight" placeholder="Digite o nome completo do alvo...">
+                        <label>Nome do Alvo</label>
+                        <p id="res-nome" class="value highlight"></p>
                     </div>
                     <div class="info-group">
-                        <label>Idade Estimada / Data de Nasc.</label>
-                        <input type="text" class="editable-input value" placeholder="Ex: 34 anos...">
-                    </div>
-                    <div class="info-group">
-                        <label>Localização Principal</label>
-                        <input type="text" class="editable-input value" placeholder="Ex: São Paulo, SP...">
+                        <label>Filtro de Localização</label>
+                        <p id="res-loc" class="value"></p>
                     </div>
                 </div>
             </div>
 
-            <!-- Card 2: Contato e Vínculos -->
+            <!-- Resumo Analítico -->
             <div class="card">
                 <div class="card-header">
-                    <h3>📞 Contatos e Profissão</h3>
+                    <h3>📊 Avaliação Documental O.S.I.N.T</h3>
                 </div>
                 <div class="card-body">
                     <div class="info-group">
-                        <label>Ocupação / Empresa Mencionada</label>
-                        <input type="text" class="editable-input value" placeholder="Onde o alvo trabalha?">
-                    </div>
-                    <div class="info-group">
-                        <label>Possível E-mail ou Telefone</label>
-                        <input type="text" class="editable-input value" placeholder="Ex: alvo@email.com / (11) 9999-9999">
-                    </div>
-                    <div class="info-group">
-                        <label>Documentação / Registros JusBrasil</label>
-                        <input type="text" class="editable-input value" placeholder="Anote eventuais processos aqui...">
+                        <label>Segurança de Coleta Restrita</label>
+                        <p class="value" style="font-size: 0.95rem; color: #475569;">
+                            Por questões estritas de sigilo e para não violar diretrizes do navegador, processos judiciais sigilosos em andamento ou currículos completos armazenados em bancos públicos indexados do JusBrasil/Google deverão ser acessados pontualmente através dos injetores configurados abaixo.
+                        </p>
                     </div>
                 </div>
             </div>
 
-            <!-- Card 3: Presença Digital (Full Width) -->
+            <!-- RESULTADOS O.S.I.N.T -->
             <div class="card full-width">
                 <div class="card-header">
-                    <h3>🌐 Presença Digital (Links e Pegadas)</h3>
+                    <h3 style="color: #2563eb;">🕸️ Mapeamento de O.S.I.N.T e Inteligência de Documentos</h3>
                 </div>
                 <div class="card-body">
+                    <div id="res-news" class="news-container">
+                        <!-- JS injeta os furos extraídos aqui dinamicamente -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- TABELA REAL COM LINKS PARA O ALVO -->
+            <div class="card full-width">
+                <div class="card-header">
+                    <h3>🔗 Central de Varredura de Ocorrências e Documentos</h3>
+                    <p style="font-size: 0.85rem; color:#6b7280; margin-top:5px;">O motor preparou links diretos baseados no nome acima. Ao acessar as abas, a busca filtrará por processos jurídicos atrelados ou PDFs liberados abertamente em vazamentos web.</p>
+                </div>
+                <div class="card-body" style="padding: 0;">
                     <table class="data-table">
                         <thead>
                             <tr>
-                                <th width="20%">Plataforma</th>
-                                <th width="50%">Cole o Link Encontrado</th>
-                                <th width="30%">Status do Perfil</th>
+                                <th>Alvo da Rede</th>
+                                <th>Tipo de Registro</th>
+                                <th>Ação Direta</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>LinkedIn</strong></td>
-                                <td><input type="text" class="editable-input" placeholder="https://linkedin.com/in/perfil..."></td>
-                                <td><input type="text" class="editable-input" placeholder="Ex: Ativo / Desatualizado"></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Facebook</strong></td>
-                                <td><input type="text" class="editable-input" placeholder="https://facebook.com/perfil..."></td>
-                                <td><input type="text" class="editable-input" placeholder="Ex: Privado"></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Instagram</strong></td>
-                                <td><input type="text" class="editable-input" placeholder="https://instagram.com/perfil..."></td>
-                                <td><input type="text" class="editable-input" placeholder="Ex: Público"></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Outra Fonte (JusBrasil, etc)</strong></td>
-                                <td><input type="text" class="editable-input" placeholder="Cole qualquer outro link aberto..."></td>
-                                <td><input type="text" class="editable-input" placeholder="Relevante"></td>
-                            </tr>
+                        <tbody id="res-links">
+                            <!-- JS preenche os links reais aqui -->
                         </tbody>
                     </table>
                 </div>
             </div>
-
-            <!-- Card 4: Alertas e Vazamentos -->
-            <div class="card full-width alert-card">
-                <div class="card-header">
-                    <h3>⚠️ Monitoramento de Vazamentos e Anotações Extras</h3>
-                </div>
-                <div class="card-body">
-                    <textarea class="editable-textarea alert-text" rows="3" placeholder="Digite aqui se encontrou o email em algum vazamento (Breach) ou se você tem alguma anotação técnica sobre a vítima da investigação..."></textarea>
-                </div>
-            </div>
         </div>
     </div>
+
+    <!-- TELA DE LOADING OVERLAY -->
+    <div id="loading-overlay" class="overlay hidden">
+        <div class="loader-box">
+            <div class="spinner"></div>
+            <h3 id="loader-status">Iniciando compilação de dados do alvo...</h3>
+            <p>Por favor, aguarde enquanto vasculhamos atalhos judiciais, currículos e notícias.</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>

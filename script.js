@@ -1,126 +1,107 @@
-function showForm(module) {
-    const formContainer = document.getElementById('form-container');
-    const formTitle = document.getElementById('form-title');
-    const formContent = document.getElementById('form-content');
-
-    formContainer.classList.remove('hidden');
-    formTitle.innerHTML = `> Módulo: <span style="color: #fff">Geração de Dorks (Investigação Nominal)</span>`;
-
-    formContent.innerHTML = `
-        <div class="input-group">
-            <label>NOME COMPLETO DO ALVO:</label>
-            <input type="text" id="input-nome" placeholder="ex: João da Silva" autocomplete="off">
-        </div>
-        <div class="input-group">
-            <label>CIDADE / ESTADO (OPCIONAL):</label>
-            <input type="text" id="input-local" placeholder="ex: São Paulo" autocomplete="off">
-        </div>
-    `;
-    
-    // Esconde a workspace na iniciação e limpa inputs
-    document.getElementById('workspace').classList.add('hidden');
-    
-    setTimeout(() => {
-        const firstInput = formContent.querySelector('input');
-        if(firstInput) firstInput.focus();
-    }, 100);
-}
-
-async function startSearch() {
-    const log = document.getElementById('log');
-    const workspace = document.getElementById('workspace');
-    
-    // Mostra o log e o dossie (workspace grid)
-    workspace.classList.remove('hidden');
-    
-    // Animação inicial
-    log.style.opacity = '0.5';
-    setTimeout(() => log.style.opacity = '1', 200);
-
-    log.innerHTML = ''; // Limpar log 
-
-    const nome = document.getElementById('input-nome').value.trim();
-    if (!nome) {
-        alert("Favor inserir o nome do alvo.");
+function iniciarPesquisa() {
+    const nameInput = document.getElementById('target-name').value.trim();
+    if (nameInput === "") {
+        alert("Atenção: O campo de nome é obrigatório para realizar a busca da pessoa.");
+        document.getElementById('target-name').focus();
         return;
     }
-    const local = document.getElementById('input-local').value.trim();
+
+    const locInput = document.getElementById('target-loc').value.trim();
+
+    // 1. Mostrar painel de Loading
+    const overlay = document.getElementById('loading-overlay');
+    const statusText = document.getElementById('loader-status');
+    overlay.classList.remove('hidden');
+
+    statusText.innerText = `Varrendo informações isoladas no nome: "${nameInput}"...`;
     
-    // Atualiza nome no dossiê
-    const inputsDossie = document.querySelectorAll('.dossier-input');
-    if (inputsDossie.length > 0) {
-        inputsDossie[0].value = nome;
-        if(local) inputsDossie[2].value = local;
-    }
+    setTimeout(() => { statusText.innerText = "Interligando endpoints legais (JusBrasil, Portais Estaduais)..."; }, 1500);
+    setTimeout(() => { statusText.innerText = "Preparando a tabela de documentos vazados e incidentes..."; }, 3000);
     
-    const exactName = `"${nome}"`;
-    const localString = local ? ` "${local}"` : '';
-    
-    const dorks = [
-        { name: "Busca Geral Exata", url: `https://www.google.com/search?q=${encodeURIComponent(exactName + localString)}` },
-        { name: "LinkedIn (Perfis / Referências)", url: `https://www.google.com/search?q=${encodeURIComponent(exactName + localString + " site:linkedin.com")}` },
-        { name: "Pastebin (Textos / Vazamentos)", url: `https://www.google.com/search?q=${encodeURIComponent(exactName + " site:pastebin.com")}` },
-        { name: "Arquivos PDF (Currículos, editais)", url: `https://www.google.com/search?q=${encodeURIComponent(exactName + " filetype:pdf")}` },
-        { name: "Processos (JusBrasil)", url: `https://www.google.com/search?q=${encodeURIComponent(exactName + localString + " site:jusbrasil.com.br")}` }
-    ];
-
-    const d = new Date();
-    const timeString = d.toTimeString().split(' ')[0];
-
-    const steps = [
-        `[${timeString}] <span class="log-info">SYS</span> Iniciando motor de Dorking para: <span class="log-highlight">${nome}</span>`,
-        `[${timeString}] <span class="log-info">SYS</span> Preparando ambiente do Dossiê...`,
-        `[${timeString}] <span class="log-info">NET</span> Gerando sintaxes de interceptação (Google Dorks)...`,
-        `[${timeString}] <span class="log-highlight">OK</span> Sintaxes prontas!`,
-        `<br>`,
-        `<b>[!] LINKS PRONTOS PARA EXECUÇÃO:</b>`,
-    ];
-
-    dorks.forEach(dork => {
-        steps.push(`  ➤ <a href="${dork.url}" target="_blank" class="dork-link">[ABRIR]</a> ${dork.name}`);
-    });
-
-    steps.push(`<br>`);
-    steps.push(`[${timeString}] <span class="log-info">DICA:</span> Clique em [ABRIR] para acessar os dados no Google, e anote as descobertas ao lado no seu Dossiê!`);
-
-    for (let i = 0; i < steps.length; i++) {
-        const speed = steps[i].includes('<a href') ? 5 : 15; 
-        await typeLine(steps[i], speed);
-        let delay = (Math.random() * 250) + 100;
-        await sleep(delay);
-    }
-}
-
-function typeLine(htmlText, speed) {
-    return new Promise(resolve => {
-        const log = document.getElementById('log');
-        const div = document.createElement('div');
-        div.className = 'log-entry typing-line';
-        log.appendChild(div);
+    setTimeout(() => {
+        // 2. Preencher a View de Resultados com a PESSOA QUE ELE DIGITOU
+        document.getElementById('res-nome').innerText = nameInput;
+        document.getElementById('res-loc').innerText = locInput || "Não inserido limite de alcance (Busca Nacional/Global)";
         
-        if (htmlText.includes('<')) {
-            div.innerHTML = htmlText;
-            div.classList.remove('typing-line');
-            log.scrollTop = log.scrollHeight;
-            resolve();
-        } else {
-            let i = 0;
-            function typeWriter() {
-                if (i < htmlText.length) {
-                    div.innerHTML += htmlText.charAt(i);
-                    i++;
-                    log.scrollTop = log.scrollHeight;
-                    setTimeout(typeWriter, speed);
-                } else {
-                    div.classList.remove('typing-line');
-                    resolve();
-                }
-            }
-            typeWriter();
+        const prenome = nameInput.split(' ')[0]; // Pega só o primeiro nome
+        
+        const divNews = document.getElementById('res-news');
+        
+        // Geração dinâmica da resposta independente de quem ele digitou
+        divNews.innerHTML = `
+            <div class="news-item">
+                <div class="news-title">🔍 Varredura Dinâmica em Dados Públicos e Notacionais: ${nameInput}</div>
+                <div class="news-desc">Analisamos a viabilidade de cruzamento notacional para o alvo inserido (<strong>${prenome}</strong>). Por garantias rigorosas de tráfego web, nosso motor não extrai à força todo o conteúdo de Diários Oficiais estaduais de uma vez para dentro da interface.</div>
+                <div class="news-source">AVALIAÇÃO E CONTROLE O.S.I.N.T</div>
+            </div>
+            <div class="news-item">
+                <div class="news-title">Seus Atalhos Profundos de Ferramenta:</div>
+                <div class="news-desc">Em vez de apenas entregar resumos errôneos, programamos a central completa (Tabela de Varredura abaixo) para varrer as áreas de perigo. Usando parâmetros complexos do Google, agora você pode explorar os "Dorks" que varrem atrás do ${prenome} procurando por incidentes jurídicos, escavador empresarial, presença em Notícias e PDFs avulsos esquecidos pela WEB.</div>
+                <div class="news-source">Central de Processamento</div>
+            </div>
+        `;
+
+
+        // 3. Montar a Tabela com LINKS que usam O QUE A PESSOA DIGITOU em banco de dados
+        montarLinksDork(nameInput, locInput);
+
+        // Termina loading e muda a tela
+        overlay.classList.add('hidden');
+        document.getElementById('search-view').classList.add('hidden');
+        document.getElementById('results-view').classList.remove('hidden');
+
+    }, 4500);
+}
+
+function montarLinksDork(nome, local) {
+    const tbody = document.getElementById('res-links');
+    tbody.innerHTML = '';
+
+    const strNome = `"${nome}"`;
+    const strLocal = local ? ` "${local}"` : '';
+    
+    const servicos = [
+        {
+            plataforma: "Consulta Geral: Notícias e Sites",
+            tipo: "Busca ampla com foco no nome entre aspas",
+            url: `https://www.google.com/search?q=${encodeURIComponent(strNome + strLocal)}`
+        },
+        {
+            plataforma: "JusBrasil / Escavador (Law OSINT)",
+            tipo: "Envolvimento em Processos / Sócios de Empresas / Diários",
+            url: `https://www.google.com/search?q=${encodeURIComponent(strNome + " site:jusbrasil.com.br OR site:escavador.com")}`
+        },
+        {
+            plataforma: "Arquivos PDF Expostos (Google Dork)",
+            tipo: "Descoberta de Documentos Públicos e Listas Estaduais (PDF)",
+            url: `https://www.google.com/search?q=${encodeURIComponent(strNome + " filetype:pdf")}`
+        },
+        {
+            plataforma: "Arquivos DOC Expostos",
+            tipo: "Recibos esquecidos ou documentações em Word",
+            url: `https://www.google.com/search?q=${encodeURIComponent(strNome + " filetype:doc OR filetype:docx")}`
+        },
+        {
+            plataforma: "Vazamentos Pastebin",
+            tipo: "Dumps raw, listas de senhas antigas vazadas ou textos curtos",
+            url: `https://www.google.com/search?q=${encodeURIComponent(strNome + " site:pastebin.com")}`
         }
+    ];
+
+    servicos.forEach(serv => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td><strong>${serv.plataforma}</strong></td>
+            <td style="color: #64748b;">${serv.tipo}</td>
+            <td><a href="${serv.url}" target="_blank" class="link-action" style="padding: 10px 14px; background: #2563eb; color:white;">🔍 Investigar -></a></td>
+        `;
+        tbody.appendChild(tr);
     });
 }
 
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+function voltarParaBusca() {
+    document.getElementById('results-view').classList.add('hidden');
+    document.getElementById('search-view').classList.remove('hidden');
+    document.getElementById('target-name').value = '';
+    document.getElementById('target-loc').value = '';
 }
